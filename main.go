@@ -44,7 +44,7 @@ type sonarrCmd struct {
 	url string
 	key string
 
-	series int
+	series int64
 }
 
 var globals struct {
@@ -78,7 +78,7 @@ func globalFlags(fs *flag.FlagSet) {
 func (s *sonarrCmd) Flags(fs *flag.FlagSet) {
 	fs.StringVar(&s.url, "sonarr-url", "", "the sonarr `url`")
 	fs.StringVar(&s.key, "sonarr-key", "", "the sonarr api `key`")
-	fs.IntVar(&s.series, "series", -1, "the series `id` to link")
+	fs.Int64Var(&s.series, "series", -1, "the series `id` to link")
 }
 
 func (s *sonarrCmd) Exec() error {
@@ -92,7 +92,12 @@ func (s *sonarrCmd) Exec() error {
 
 	client := sonarr.New(conf)
 
-	eps, err := client.GetSeriesEpisodeFiles(int64(s.series))
+	series, err := client.GetSeries(s.series)
+	if err != nil {
+		return fmt.Errorf("sonarr: unable to get series for tvdvb id %d: %w", s.series, err)
+	}
+
+	eps, err := client.GetSeriesEpisodeFiles(series[0].ID)
 	if err != nil {
 		return fmt.Errorf("sonarr: unable to get series episode files: %w", err)
 	}
