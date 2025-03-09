@@ -137,10 +137,12 @@ func main() {
 		fmt.Println("starrlink: usage: sonarr <args>")
 		os.Exit(2)
 	}
-	globalFlags(flag.CommandLine)
-	cmd.Flags(flag.CommandLine)
 
-	flag.Parse()
+	fs := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+	globalFlags(fs)
+	cmd.Flags(fs)
+
+	fs.Parse(os.Args[2:])
 
 	if err := cmd.Exec(); err != nil {
 		fmt.Println(err)
