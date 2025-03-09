@@ -31,7 +31,7 @@ func require[T comparable](param, envar string, val T) {
 		return
 	}
 
-	fmt.Printf("starrlink: required parameter not provided; flag %q or envar %q must be set", param, envar)
+	fmt.Printf("starrlink: required parameter not provided; flag %q or envar %q must be set\n", param, envar)
 	os.Exit(2)
 }
 
