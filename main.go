@@ -102,8 +102,10 @@ func (s *sonarrCmd) Exec() error {
 		return fmt.Errorf("sonarr: unable to get series episode files: %w", err)
 	}
 
+	title := strings.ReplaceAll(series[0].CleanTitle, " ", ".")
+
 	for _, ep := range eps {
-		dst := filepath.Join(globals.dst, strconv.Itoa(ep.SeasonNumber))
+		dst := filepath.Join(globals.dst, fmt.Sprintf("%s.S%02D", title, ep.SeasonNumber))
 		if err := os.MkdirAll(dst, 0o755); err != nil {
 			return fmt.Errorf("sonarr: unable to create destination: %w", err)
 		}
@@ -111,6 +113,7 @@ func (s *sonarrCmd) Exec() error {
 		src := mapPath(ep.Path)
 		ext := filepath.Ext(ep.Path)
 		link := filepath.Join(dst, ep.SceneName+ext)
+
 		if err := os.Link(src, link); err != nil {
 			return fmt.Errorf("sonarr: unable to create link at %s: %w", link, err)
 		}
