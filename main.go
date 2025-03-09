@@ -104,7 +104,7 @@ func (s *sonarrCmd) Exec() error {
 	title := strings.ReplaceAll(series[0].CleanTitle, " ", ".")
 
 	for _, ep := range eps {
-		dst := filepath.Join(globals.dst, fmt.Sprintf("%s.S%02D", title, ep.SeasonNumber))
+		dst := filepath.Join(globals.dst, fmt.Sprintf("%s.S%02d", title, ep.SeasonNumber))
 		if err := os.MkdirAll(dst, 0o755); err != nil {
 			return fmt.Errorf("sonarr: unable to create destination: %w", err)
 		}
