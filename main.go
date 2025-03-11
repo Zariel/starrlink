@@ -101,7 +101,7 @@ func (s *sonarrCmd) Exec() error {
 		return fmt.Errorf("sonarr: unable to get series episode files: %w", err)
 	}
 
-	title := strings.ReplaceAll(series[0].CleanTitle, " ", ".")
+	title := strings.ReplaceAll(series[0].Title, " ", ".")
 
 	for _, ep := range eps {
 		dst := filepath.Join(globals.dst, fmt.Sprintf("%s.S%02d", title, ep.SeasonNumber))
