@@ -111,7 +111,7 @@ func (s *sonarrCmd) Exec() error {
 
 		src := mapPath(ep.Path)
 		ext := filepath.Ext(ep.Path)
-		link := filepath.Join(dst, ep.SceneName+ext)
+		link := filepath.Join(dst, strings.ReplaceAll(ep.SceneName, " ", ".")+ext)
 
 		if err := os.Link(src, link); err != nil {
 			return fmt.Errorf("sonarr: unable to create link at %s: %w", link, err)
